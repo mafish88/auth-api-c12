@@ -8,9 +8,8 @@ export async function isAuthenticated(req, res, next) {
     res.status(401).send({ message: 'No authorization token found' });
     return;
   }
-  console.log(authorization);
   // then check if the token is VALID:
-  jwt.verify(authorization, secretKey , (err, decoded) => {
+  jwt.verify(authorization, secretKey, (err, decoded) => {
     if(err) { // not valid token:
       res.status(401).send(err);
       return;
