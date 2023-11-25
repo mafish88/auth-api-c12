@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
 import { db } from "./dbConnect.js";
 import { secretKey } from "./creds.js";
 
@@ -10,7 +11,9 @@ export async function createUser(req, res) {
     res.status(400).send({ message: 'Invalid email or password.' });
     return;
   }
-  await coll.add({ email: email.toLowerCase(), password }); // TODO: hash the password
+
+  const hashedPw = await bcrypt.hash(password, 10);// generates salt(10) and hashes
+  await coll.add({ email: email.toLowerCase(), password: hashedPw }); 
   login(req, res);
 }
 
